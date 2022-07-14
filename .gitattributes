@@ -61,8 +61,4 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-* linguist-vendored
-*.csharp linguist-detectable=false
-*.js linguist-detectable=false
-*.html linguist-detectable=false
-*.css linguist-detectable=false
+* [EasyHR]/wwwroot/* linguist-vendored
