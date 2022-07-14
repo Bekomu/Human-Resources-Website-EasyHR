@@ -1,0 +1,1392 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+@using Microsoft.AspNetCore.Identity
+@using EasyHR.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@{
+    var user = @UserManager.GetUserAsync(User).Result;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<!--<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EasyHR | Login</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="~/personel/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/js/site.js">-->
+
+    <!-- Bootstrap CSS -->
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />-->
+
+    <!-- font awesome  -->
+    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+
+</head>-->
+
+<body class="hold-transition layout-top-nav">
+
+    @{
+        int paketSayisi = Model.SatistakiPaketler != null ? Model.SatistakiPaketler.Count : 0;
+    }
+    @if (User.IsInRole("Yonetici"))
+    {
+        @*Paket Seçenekleri*@
+        <div class="card card-primary card-outline collapsed-card">
+            @*collapsed-card*@
+            <div class="card-header">
+
+                <h5 class="card-title m-0"><i class="nav-icon"></i> Güncel Üyelik Paketleri - @Model.SatistakiPaketler.Count Adet</h5>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
+            </div>
+            <div class="card-body" style="background-color:lightgrey;">
+
+                <div class="container" style="max-width:1000px;">
+
+                    <!-- Jumbotron -->
+                    <!--Carousel Wrapper-->
+                    <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel" style="height:600px;">
+
+                        <!--Controls-->
+                        @*<div class="controls-top my-2">
+                                <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+                                <a class="btn-floating" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+                            </div>*@
+                        <!--/.Controls-->
+                        <!--Indicators-->
+                        <ol class="carousel-indicators">
+                            @if (paketSayisi <= 3)
+                            {
+                                <li data-target="#multi-item-example" data-slide-to="0"></li>
+                            }
+                            @if (paketSayisi > 3 && paketSayisi <= 6)
+                            {
+                                <li data-target="#multi-item-example" data-slide-to="0"></li>
+
+                                <li data-target="#multi-item-example" data-slide-to="1"></li>
+                            }
+                            @if (paketSayisi > 6 && paketSayisi <= 9)
+                            {
+                                <li data-target="#multi-item-example" data-slide-to="0"></li>
+
+                                <li data-target="#multi-item-example" data-slide-to="1"></li>
+
+                                <li data-target="#multi-item-example" data-slide-to="2"></li>
+                            }
+                            @if (paketSayisi > 9 && paketSayisi <= 12)
+                            {
+                                <li data-target="#multi-item-example" data-slide-to="0"></li>
+
+                                <li data-target="#multi-item-example" data-slide-to="1"></li>
+
+                                <li data-target="#multi-item-example" data-slide-to="2"></li>
+
+                                <li data-target="#multi-item-example" data-slide-to="3"></li>
+                            }
+                        </ol>
+                        <!--/.Indicators-->
+                        <!--Slides-->
+
+                        <div class="carousel-inner" role="listbox">
+
+                            @if (paketSayisi > 0)
+                            {
+                                if (paketSayisi <= 3)
+                                {
+                                    <div class="carousel-item active">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                if (paketSayisi > 3 && paketSayisi <= 6)
+                                {
+                                    <div class="carousel-item active">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Skip(3).Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                if (paketSayisi > 6 && paketSayisi <= 9)
+                                {
+                                    <div class="carousel-item active">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Skip(3).Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Skip(6).Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                if (paketSayisi > 9 && paketSayisi <= 12)
+                                {
+                                    <div class="carousel-item active">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Skip(3).Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Skip(6).Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="container">
+                                            <div class="row">
+
+                                                @foreach (var paket in Model.SatistakiPaketler.Skip(9).Take(3))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+
+                                                        <div class="pricingTable10 m-auto" style="max-width:260px;">
+
+                                                            <div id="previewBox_@paket.Id" class="pricingTable-header">
+                                                                <style>
+                                                                #previewBox_@paket.Id {
+                                                                    padding: 30px 0;
+                                                                    /*background: #4d4d4d;*/
+                                                                    background: url("../admin/paket/@paket.FotografAdi");
+                                                                    position: relative;
+                                                                    transition: all .3s ease 0s
+                                                                }
+                                                                </style>
+                                                                <h3 id="paketAdi" class="heading">@paket.Ad</h3>
+
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.TRY)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">₺</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.USD)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">$</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.EUR)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">€</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                                @if (paket.ParaBirimiEnum == EasyHR.Models.Enums.ParaBirimiEnum.GBP)
+                                                                {<span class="price-value">
+                                                                        <span id="paraBirimi">£</span><span id="paketUcreti">@paket.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                                                                    </span>}
+
+                                                            </div>
+
+                                                            <div class="pricing-content">
+                                                                <ul>
+                                                                    <li><span id="kullaniciSayisi">@paket.KullaniciSayisi</span> adet Personel</li>
+                                                                    <li><span id="emailSayisi">@paket.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                                                                    <li><span id="kullanimSuresi">@paket.KullanimSuresiGun</span> Gün Kullanım</li>
+                                                                    <li>
+                                                                        Satın almak için son <span id="kalanGun">
+                                                                            @( Math.Ceiling((paket.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                                                                        </span> gün
+                                                                    </li>
+                                                                </ul>
+                                                                <a onclick="paketSatinAl(@paket.Id, '@paket.Ad', '@paket.ParaBirimiEnum', '@paket.Tutar.ToString("n2")')" class="read">Satın al</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <h2>Satışta hiç Paket yok.</h2>
+                            }
+
+
+                        </div>
+                        <!--/.Slides-->
+
+                    </div>
+                    <!--/.Carousel Wrapper-->
+
+
+                </div>
+
+            </div>
+        </div>
+
+    }
+    @*Paket Seçenekleri - son*@
+
+
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="my-3">
+            <div class="alert alert-success m-auto" style="max-width:750px;">
+                @TempData["Mesaj"] @user.Ad @user.Soyad!
+            </div>
+        </div>
+    }
+
+    @if (TempData["paketmesaj"] != null)
+    {
+        <div class="my-3">
+            <div class="alert alert-danger m-auto" style="max-width:750px;">
+                @TempData["paketmesaj"]
+            </div>
+        </div>
+    }
+
+    <h1 class="m-3 " align="center">Bilgilerim</h1>
+    <div class="">
+
+
+        <div class="content">
+            <div class="container">
+                <div class="m-auto" style="max-width:750px;">
+
+                    <div class="card card-primary card-outline">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <div class="row">
+
+                                    <div class="col-sm-4">
+                                        <img style="max-height:120px; max-width:110px;" class="brand-image img elevation-3 img-rounded h-100 w-100" src="~/personel/fotolar/@(user.FotografAdi == null ? "default.jpg" : user.FotografAdi)" alt="User Image">
+                                    </div>
+
+                                    <div class="col-sm-8 mt-3">
+                                        <div class="d-flex justify-content-start">
+                                            <div class="font-weight-bold">Ad:</div>
+                                            <div class="ml-1">@Model.Ad</div>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <div class="font-weight-bold">Soyad:</div>
+                                            <div class="ml-1">@Model.Soyad</div>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <div class="font-weight-bold">Unvan:</div>
+                                            <div class="ml-1">@Model.Unvan</div>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <div class="font-weight-bold">Email:</div>
+                                            <div class="ml-1">@Model.Email</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </p>
+                        </div>
+                    </div>
+
+                    @if (User.IsInRole("Yonetici") || User.IsInRole("Personel"))
+                    {
+                        <div class="card card-primary card-outline collapsed-card">
+                            <div class="card-header">
+                                <h5 class="card-title m-0"><i class="nav-icon fas fa-file-invoice-dollar"></i> Avans Taleplerim</h5>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                @if (Model.AvansTalepleri.Count > 0)
+                                {
+                                    <table class="table table-striped mb-4">
+                                        <thead align="center">
+                                            <tr>
+                                                <th>Talep Tarihi</th>
+                                                <th>Talep Tutarı</th>
+                                                <th>Talep Durumu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody align="center">
+                                            @foreach (var avansTalep in Model.AvansTalepleri)
+                                            {
+                                                <tr>
+                                                    <td>@avansTalep.TalepTarihi.ToShortDateString()</td>
+                                                    <td>@avansTalep.AvansTutari.ToString("c2")</td>
+                                                    <td>
+                                                        @if ((int)avansTalep.AvansOnayDurumu == 1)
+                                                        {
+                                                            <span>
+                                                                Onaylandı
+                                                            </span>
+                                                            <span>
+                                                                <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                                            </span>
+                                                        }
+                                                        else if ((int)avansTalep.AvansOnayDurumu == 2)
+                                                        {
+                                                            <span>
+                                                                Beklemede
+                                                            </span>
+                                                            <span>
+                                                                <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>
+                                                                Reddedildi
+                                                            </span>
+                                                            <span>
+                                                                <i style="color:red;" class="fas fa-times-circle"></i>
+                                                            </span>
+                                                        }
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p class="card-text">Onay bekleyen avans talebiniz yok.</p>
+                                }
+                                <a asp-controller="Personel" asp-action="AvansTalepListele" class="btn btn-primary">Tüm Avans Taleplerim</a>
+                            </div>
+                        </div>
+
+                        <div class="card card-primary card-outline collapsed-card collapsed-card">
+                            <div class="card-header">
+                                <h5 class="card-title m-0"><i class="nav-icon fas fa-cash-register"></i> Harcama Taleplerim</h5>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                @if (Model.HarcamaTalepleri.Count > 0)
+                                {
+                                    <table class="table table-striped mb-4">
+                                        <thead align="center">
+                                            <tr>
+                                                <th>Talep Tarihi</th>
+                                                <th>Talep Tutarı</th>
+                                                <th>Talep Durumu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody align="center">
+                                            @foreach (var harcamaTalep in Model.HarcamaTalepleri)
+                                            {
+                                                <tr>
+                                                    <td>@harcamaTalep.TalepTarihi.ToShortDateString()</td>
+                                                    <td>@harcamaTalep.HarcamaTutari.ToString("c2")</td>
+                                                    <td>
+                                                        @if ((int)harcamaTalep.HarcamaOnayDurumu == 1)
+                                                        {
+                                                            <span>
+                                                                Onaylandı
+                                                            </span>
+                                                            <span>
+                                                                <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                                            </span>
+                                                        }
+                                                        else if ((int)harcamaTalep.HarcamaOnayDurumu == 2)
+                                                        {
+                                                            <span>
+                                                                Beklemede
+                                                            </span>
+                                                            <span>
+                                                                <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>
+                                                                Reddedildi
+                                                            </span>
+                                                            <span>
+                                                                <i style="color:red;" class="fas fa-times-circle"></i>
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p class="card-text">Onay bekleyen harcama talebi yok.</p>
+                                }
+                                <a asp-controller="Personel" asp-action="HarcamaTalepListele" class="btn btn-primary">Tüm Harcama Taleplerim</a>
+                            </div>
+                        </div>
+
+                        <div class="card card-primary card-outline collapsed-card">
+
+                            <div class="card-header">
+                                <h5 class="card-title m-0"><i class="nav-icon fas fa-mug-hot"></i> İzin Taleplerim</h5>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                @if (Model.IzinTalepleri.Count > 0)
+                                {
+                                    <table class="table table-striped mb-4">
+                                        <thead align="center">
+                                            <tr>
+                                                <th>Talep Tarihi</th>
+                                                <th>Başlangıç Tarihi</th>
+                                                <th>Bitiş Tarihi</th>
+                                                <th>Durum</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody align="center">
+                                            @foreach (var izinTalep in Model.IzinTalepleri)
+                                            {
+                                                <tr>
+                                                    <td>@izinTalep.TalepTarihi.ToShortDateString()</td>
+                                                    <td>@izinTalep.IzinBaslangicTarihi.ToShortDateString()</td>
+                                                    <td>@izinTalep.IzinBitisTarihi.ToShortDateString()</td>
+                                                    <td>
+                                                        @if ((int)izinTalep.IzinOnayDurumu == 1)
+                                                        {
+                                                            <span>
+                                                                Onaylandı
+                                                            </span>
+                                                            <span>
+                                                                <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                                            </span>
+                                                        }
+                                                        else if ((int)izinTalep.IzinOnayDurumu == 2)
+                                                        {
+                                                            <span>
+                                                                Beklemede
+                                                            </span>
+                                                            <span>
+                                                                <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>
+                                                                Reddedildi
+                                                            </span>
+                                                            <span>
+                                                                <i style="color:red;" class="fas fa-times-circle"></i>
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p class="card-text">Onay bekleyen harcama talebi yok.</p>
+                                }
+                                <a asp-controller="Personel" asp-action="IzinTalepListele" class="btn btn-primary">Tüm İzin Taleplerim</a>
+                            </div>
+                        </div>
+
+                    }
+
+
+                    @if (User.IsInRole("Yonetici"))
+                    {
+                        <br />
+                        <hr />
+                        <div class="m-auto" style="max-width:750px;">
+                            <h1 class="m-3 " align="center">Personel Talepleri</h1>
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <div class="card card-primary card-outline collapsed-card">
+                                        <div class="card-header">
+                                            <h5 class="card-title m-0"><i class="nav-icon fas fa-file-invoice-dollar"></i> Personel Avans Talepleri</h5>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                        <div class="card-body">
+                                            @if (Model.PersonelAvansTalepleri.Count > 0)
+                                            {
+                                                <table class="table table-striped mb-4">
+                                                    <thead align="center">
+                                                        <tr>
+                                                            <th>Talep Eden</th>
+                                                            <th>Talep Tarihi</th>
+                                                            <th>Talep Tutarı</th>
+                                                            <th>Talep Durumu</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody align="center">
+                                                        @foreach (var avansTalep in Model.PersonelAvansTalepleri)
+                                                        {
+                                                            <tr>
+                                                                <td>@avansTalep.Personel.Ad @avansTalep.Personel.Soyad</td>
+                                                                <td>@avansTalep.TalepTarihi.ToShortDateString()</td>
+                                                                <td>@avansTalep.AvansTutari.ToString("c2")</td>
+                                                                <td>
+                                                                    <span id="aciklama">@avansTalep.AvansOnayDurumu</span>
+                                                                    <span>
+                                                                        @if ((int)avansTalep.AvansOnayDurumu == 1)
+                                                                        {
+                                                                            <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                                                        }
+                                                                        else if ((int)avansTalep.AvansOnayDurumu == 2)
+                                                                        {
+                                                                            <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i style="color:red;" class="fas fa-times-circle"></i>
+                                                                        }
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+                                            else
+                                            {
+                                                <p class="card-text">Onay bekleyen avans talebi yok.</p>
+                                            }
+
+                                            <a asp-controller="TalepYonet" asp-action="Avanslar" class="btn btn-primary">Tüm Avans Talepleri</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="card card-primary card-outline collapsed-card">
+                                        <div class="card-header">
+                                            <h5 class="card-title m-0"><i class="nav-icon fas fa-cash-register"></i> Personel Harcama Talepleri</h5>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            @if (Model.PersonelHarcamaTalepleri.Count > 0)
+                                            {
+                                                <table class="table table-striped mb-4">
+                                                    <thead align="center">
+                                                        <tr>
+                                                            <th>Talep Eden</th>
+                                                            <th>Talep Tarihi</th>
+                                                            <th>Talep Tutarı</th>
+                                                            <th>Talep Durumu</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody align="center">
+                                                        @foreach (var harcamaTalep in Model.PersonelHarcamaTalepleri)
+                                                        {
+                                                            <tr>
+                                                                <td>@harcamaTalep.Personel.Ad @harcamaTalep.Personel.Soyad</td>
+                                                                <td>@harcamaTalep.TalepTarihi.ToShortDateString()</td>
+                                                                <td>@harcamaTalep.HarcamaTutari.ToString("c2")</td>
+                                                                <td>
+                                                                    <span id="aciklama">@harcamaTalep.HarcamaOnayDurumu</span>
+                                                                    <span>
+                                                                        @if ((int)harcamaTalep.HarcamaOnayDurumu == 1)
+                                                                        {
+                                                                            <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                                                        }
+                                                                        else if ((int)harcamaTalep.HarcamaOnayDurumu == 2)
+                                                                        {
+                                                                            <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i style="color:red;" class="fas fa-times-circle"></i>
+                                                                        }
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+                                            else
+                                            {
+                                                <p class="card-text">Onay bekleyen harcama talebi yok.</p>
+                                            }
+
+                                            <a asp-controller="TalepYonet" asp-action="Harcamalar" class="btn btn-primary">Tüm Harcama Talepleri</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="card card-primary card-outline collapsed-card">
+
+                                        <div class="card-header">
+                                            <h5 class="card-title m-0"><i class="nav-icon fas fa-mug-hot"></i> Personel İzin Talepleri</h5>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                        <div class="card-body">
+                                            @if (Model.PersonelIzinTalepleri.Count > 0)
+                                            {
+                                                <table class="table table-striped mb-4">
+                                                    <thead align="center">
+                                                        <tr>
+                                                            <th>Talep Eden</th>
+                                                            <th>Talep Tarihi</th>
+                                                            <th>Başlangıç Tarihi</th>
+                                                            <th>Bitiş Tarihi</th>
+                                                            <th>Durum</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody align="center">
+                                                        @foreach (var izinTalep in Model.PersonelIzinTalepleri)
+                                                        {
+                                                            <tr>
+                                                                <td>@izinTalep.Personel.Ad @izinTalep.Personel.Soyad</td>
+                                                                <td>@izinTalep.TalepTarihi.ToShortDateString()</td>
+
+                                                                <td>@izinTalep.IzinBaslangicTarihi.ToShortDateString()</td>
+                                                                <td>@izinTalep.IzinBitisTarihi.ToShortDateString()</td>
+                                                                <td>
+                                                                    <span id="aciklama">@izinTalep.IzinOnayDurumu</span>
+                                                                    <span>
+                                                                        @if ((int)izinTalep.IzinOnayDurumu == 1)
+                                                                        {
+                                                                            <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                                                        }
+                                                                        else if ((int)izinTalep.IzinOnayDurumu == 2)
+                                                                        {
+                                                                            <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i style="color:red;" class="fas fa-times-circle"></i>
+                                                                        }
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+                                            else
+                                            {
+                                                <p class="card-text">Onay bekleyen harcama talebi yok.</p>
+                                            }
+
+                                            <a asp-controller="TalepYonet" asp-action="Izinler" class="btn btn-primary">Tüm İzin Talepleri</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../../dist/js/adminlte.min.js?v=3.2.0"></script>
+
+    <script src="../../dist/js/demo.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+    <script>
+
+        function paketSatinAl(paketId, paketAdipaket, paraBirimipaket, paketTutaripaket) {
+            event.preventDefault();
+
+            var paketUcreti = paketTutaripaket;
+            var paketAdi = paketAdipaket;
+            var paraBirimi = paraBirimipaket;
+
+            if (paraBirimipaket == "TRY") { paraBirimi = "₺" }
+            if (paraBirimipaket == "USD") { paraBirimi = "$" }
+            if (paraBirimipaket == "EUR") { paraBirimi = "€" }
+            if (paraBirimipaket == "GBP") {paraBirimi = "£"}
+
+            if (!isNaN(paketId)) {
+
+                Swal.fire({
+                    title: 'Satın alma onayı?',
+                    text: `${paketUcreti} ${paraBirimi} tutarında olan, ${paketAdi} adındaki paketi satın almak istiyor musunuz ?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Evet, satın al!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                    type: "post",
+                    dataType: "html",
+                    data: { paketId: paketId },
+                    url: '@Url.Action("PaketSatinAl", "Home")',
+                    success: function (response) {
+                        Swal.fire({
+                            timer: 5000,
+                            title: '',
+                            text: 'Satın alma başarılı, sayfaya yönlendiriliyorsunuz.',
+                            icon: 'success',
+                        })
+                        window.location = '/Home/MevcutPaket';
+                    },
+                    error: function () {
+
+                    }
+                });
+
+                    }
+                });
+            }
+            else {
+
+            }
+        };
+
+    </script>
+
+</body>
+</html>
+
+<style>
+    @@media only screen and (max-width: 794px) {
+        #aciklama {
+            display: none;
+        }
+
+        #table {
+            overflow-x: auto;
+        }
+    }
+
+    /*.pricingTable10 .pricingTable-header {
+        padding: 30px 0;*/
+    /*background: #4d4d4d;*/
+    /*background: url("../admin/paket/paket4-260x175.jpg");
+        position: relative;
+        transition: all .3s ease 0s
+    }*/
+
+</style>

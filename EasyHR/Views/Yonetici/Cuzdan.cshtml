@@ -1,0 +1,57 @@
+﻿@model CuzdanViewModel
+@{
+    ViewData["Title"] = "Cüzdan";
+}
+
+
+
+<div class="card card-primary card-outline m-3 m-auto" style="max-width:1100px;">
+    <div class="card-body m-auto" style="width:600px;">
+        <h1>Cüzdan</h1>
+
+        @if (ViewBag.mesaj != null)
+        {
+            <div style="max-width:1100px;" class="alert alert-success">@ViewBag.mesaj</div>
+        }
+
+                <div class="card rounded-3 mt-5">
+                    <div class="card-body mx-1 my-2 m-auto w-75">
+                        <div class="d-flex align-items-center">
+
+                            <div>
+                                <p class="d-flex flex-column mb-0">
+
+                                    <b>  <img class="icon" src="~/personel/dist/img/walletk.png" alt="Alternate Text" /> Bakiye: @Model.CuzdandakiMevcutPara TL</b>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3">
+                            <div class="d-flex flex-row pb-3">
+                                <div class="rounded border d-flex w-100 px-3 py-2 align-items-center">
+                                    <form asp-controller="Yonetici" asp-action="BakiyeEkle" method="post">
+                                        <div class="form-group">
+                                            <label asp-for="KartId">Kart</label>
+                                            <select class="form-control" asp-for="KartId" asp-items="@ViewBag.Kartlar"></select>
+                                            <span asp-validation-for="KartId" class="text text-danger"></span>
+                                        </div>
+
+                                        <p> Kart Eklemek için <a asp-controller="Yonetici" asp-action="KartEkle"> tıklayın.</a> </p>
+                                        <div class="d-flex flex-column py-1">
+                                            <p class="mb-1 text-primary">Bir tutar giriniz:</p>
+                                            <div class="d-flex flex-row align-items-center">
+                                                <h6 class="mb-0 mr-2 text-primary pe-1">₺</h6>
+                                                <input asp-for="EklenecekBakiye" type="text" class="form-control form-control-sm harcama"
+                                                       style="width: 80px;" />
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary mt-2" type="submit">Bakiye Ekle</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+    </div>
+</div>

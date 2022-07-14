@@ -1,0 +1,41 @@
+﻿@model KartEkleViewModel
+@{
+    ViewData["Title"] = "Kart Ekle";
+}
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+
+<div class="card card-primary card-outline m-3 m-auto" style="max-width:500px;">
+    <div class="card-body">
+
+            <form class="form" method="post" asp-controller="Yonetici" asp-action="KartEkle">
+                <div class="form-group">
+                    <label asp-for="KartIsmi">Karta Verilecek Ad</label>
+                    <input maxlength="25" asp-for="KartIsmi" class="form-control" />
+                    <span asp-validation-for="KartIsmi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AdSoyad">Kart Üzerindeki İsim</label>
+                    <input maxlength="22" asp-for="AdSoyad" class="form-control sadeceHarf" />
+                    <span asp-validation-for="AdSoyad" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="KartNumarasi">Kart Numarası</label>
+                    <input asp-for="KartNumarasi" class="form-control kkarti" />
+                    <span asp-validation-for="KartNumarasi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SKT">Ay/Yıl (aa/YY)</label>
+                    <input asp-for="SKT" class="form-control" maxlength="5" />
+                    <span asp-validation-for="SKT" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CVC2">CVC2</label>
+                    <input asp-for="CVC2" class="form-control cvc" />
+                    <span asp-validation-for="CVC2" class="text-danger"></span>
+                </div>
+                <button class="btn btn-primary" type="submit">Ekle</button>
+            </form>
+
+    </div>
+</div>

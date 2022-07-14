@@ -1,0 +1,92 @@
+﻿@model List<HarcamaTalepleriniYonetViewModel>
+@{
+    ViewData["Title"] = "Harcama Talepleri Yönetim Sayfası";
+}
+
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+<div class="row m-3 m-auto" style="max-width:1100px;">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr align="center">
+                            <th>Personel</th>
+                            <th>Talep Edilen Tutar</th>
+                            <th>Talep Tarihi</th>
+                            <th>Durum</th>
+                            <th>Onay/Ret Tarihi</th>
+                            <th>İşlem</th>
+                            <th>Dosya</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var harcamaTalep in Model)
+                        {
+                            <tr data-widget="expandable-table" aria-expanded="false" align="center">
+                                <td id="tamAd@(harcamaTalep.Id)">@harcamaTalep.TamAd</td>
+                                <td id="harcamaTutari@(harcamaTalep.Id)">@harcamaTalep.HarcamaTutari.ToString("c2")</td>
+                                <td id="tarih@(harcamaTalep.Id)">@harcamaTalep.TalepTarihi.ToString("dd-MM-yyyy")</td>
+                                <td>
+                                    <span id="aciklama">@harcamaTalep.HarcamaOnayDurumuStr</span>
+                                    <span>
+                                        @if ((int)harcamaTalep.HarcamaOnayDurumu == 1)
+                                        {
+                                            <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                        }
+                                        else if ((int)harcamaTalep.HarcamaOnayDurumu == 2)
+                                        {
+                                            <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                        }
+                                        else
+                                        {
+                                            <i style="color:red;" class="fas fa-times-circle"></i>
+                                        }
+                                    </span>
+                                </td>
+                                <td>@(harcamaTalep.SonuclanmaTarihi == null ? "-" : harcamaTalep.SonuclanmaTarihi.Value.ToString("dd-MM-yyyy"))</td>
+                                <td class="d-table-cell">
+                                    @if ((int)harcamaTalep.HarcamaOnayDurumu == 2)
+                                    {
+                                        <a onclick="HarcamaOnayla(@harcamaTalep.Id)" class="btn btn-sm btn-success">Onayla</a>
+                                        <a onclick="HarcamaReddet(@harcamaTalep.Id)" class="btn btn-sm btn-danger">Reddet</a>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a onclick=Onizle('@harcamaTalep.DosyaAdi') href="#">
+                                        <i class="fas fa-file-download"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="expandable-body">
+                                <td colspan="7">
+                                    <p class="mx-3">
+                                        Harcama Talep Açıklaması :<br /><br />@harcamaTalep.Aciklama
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @@media only screen and (max-width: 794px) {
+        #aciklama {
+            display: none;
+        }
+
+        #table {
+            overflow-x: auto;
+        }
+    }
+</style>
+

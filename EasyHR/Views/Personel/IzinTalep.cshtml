@@ -1,0 +1,85 @@
+﻿@model IzinTalepEkleViewModel
+@{
+    ViewData["Title"] = "İzin Talep";
+
+}<h1 align="center" class="m-3">İzin Talep Formu</h1>
+
+
+<div class="card card-primary card-outline m-3 m-auto" style="max-width:1100px;">
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <form id="frmIzinTalep" asp-controller="Personel" asp-action="IzinTalep" method="post">
+                    <div class="form-group">
+                        <label asp-for="IzinTuruEnum"></label>
+                        <select class="form-control" asp-for="IzinTuruEnum" asp-items="@ViewBag.IzinTurleri"></select>
+                        @*<span asp-validation-for="IzinTuruEnum" class="text text-danger"></span>*@
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BaslangicTarihi"></label>
+                        <input class="form-control" asp-for="BaslangicTarihi" />
+                        <span asp-validation-for="BaslangicTarihi" class="text text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BitisTarihi"></label>
+                        <input class="form-control" asp-for="BitisTarihi" />
+                        @*<span asp-validation-for="BitisTarihi" class="text text-danger"></span>*@
+                    </div>
+                    <a id="izinTalepEt" href="#" class="btn btn-info">Talep Et</a>
+                </form>
+            </div>
+
+            <div class="col-sm-6">
+                <ul class="m-3">
+                    <li>Bu ekranda izin taleplerinizi yapabilirsiniz.</li>
+                    <li>Doğum izni kanuni olarak 8 haftadır.</li>
+                    <li>Doğum sonrası izin kanuni olarak 8 haftadır.</li>
+                    <li>Hastalık izni kanuni olarak en fazla 2 gündür ve rapor gerekmektedir.</li>
+                    <li>Mazeret izni ; evlenme, evlat edinme, anne, baba, kardeş, eş ya da çocuğunun vefatı halinde üç gün, erkek personel babalık halinde beş gün olmak üzere ücretli izin verilir.</li>
+                    <li>Babalık izni hesaplanırken izin süresi iş günü olarak hesaplanmaz. Hafta tatilleri ve resmi tatillere denk gelen günler bu izin süresinden sayılacaktır.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $("#izinTalepEt").click(function () {
+            event.preventDefault();
+
+            var baslangicTarihi = $("#BaslangicTarihi").val();
+            var bitisTarihi = $("#BitisTarihi").val();
+            var bit = new Date(bitisTarihi);
+            var bas = new Date(baslangicTarihi);
+            var fark = bit - bas;
+            var gun = Math.round(fark / 1000 / 60 / 60 / 24);
+
+            if (!isNaN(gun) && bit > Date.now() && bit > bas && bas > Date.now() && bas != bit) {
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: `${baslangicTarihi} - ${bitisTarihi} tarihleri arasında ${gun} gün izin talep ettiniz. Onaylıyor musunuz?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Evet, onayla!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#frmIzinTalep").submit();
+                    }
+                });
+            }
+            else {
+                $("#frmIzinTalep").submit();
+            }
+        });
+    </script>
+}
+

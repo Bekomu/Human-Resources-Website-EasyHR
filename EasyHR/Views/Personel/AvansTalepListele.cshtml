@@ -1,0 +1,137 @@
+﻿@{
+    ViewData["Title"] = "Avans Taleplerim";
+}
+
+@model List<AvansTalepListeleViewModel>
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+@if (ViewBag.mesaj != null)
+{
+    <div style="max-width:1100px;" class="alert alert-success mx-auto">@ViewBag.mesaj</div>
+}
+
+
+<div class="row m-3 m-auto" style="max-width:1100px;">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Talep Geçmişim</h3>
+            </div>
+
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr align="center">
+                            <th>Talep Edilen Tutar</th>
+                            <th>Talep Tarihi</th>
+                            <th>Durum</th>
+                            <th>Onay / Ret Tarihi</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var avansTalep in Model)
+                        {
+                            <tr data-widget="expandable-table" aria-expanded="false" align="center">
+                                <td>@avansTalep.AvansTutari.ToString("c2")</td>
+                                <td>@avansTalep.TalepTarihi.ToString("dd-MM-yyyy")</td>
+                                <td>
+                                    <span id="aciklama">@avansTalep.AvansOnayDurumuStr</span>
+                                    <span>
+                                        @if ((int)avansTalep.AvansOnayDurumu == 1)
+                                        {
+                                            <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                        }
+                                        else if ((int)avansTalep.AvansOnayDurumu == 2)
+                                        {
+                                            <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                        }
+                                        else
+                                        {
+                                            <i style="color:red;" class="fas fa-times-circle"></i>
+                                        }
+                                    </span>
+                                </td>
+                                <td>@(avansTalep.SonuclanmaTarihi == null ? "-" : avansTalep.SonuclanmaTarihi.Value.ToString("dd-MM-yyyy"))</td>
+                                <td>
+                                    @if ((int)avansTalep.AvansOnayDurumu == 2)
+                                    {
+                                        <a onclick="SilmeOnayi(@avansTalep.Id)" class="btn btn-sm btn-danger">İptal Et</a>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="expandable-body">
+                                <td colspan="5">
+                                    <p class="mx-3">
+                                        Avans Talep Açıklaması :<br /><br />@avansTalep.Aciklama
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    @@media only screen and (max-width: 794px) {
+        #aciklama {
+            display: none;
+        }
+
+        #table {
+            overflow-x: auto;
+        }
+    }
+</style>
+
+<script>
+
+    function SilmeOnayi(avansId) {
+
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: `Avans talebiniz iptal edilecek, onaylıyor musunuz ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, iptal et!',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: "post",
+                    dataType: "html",
+                    data: { avansId: avansId },
+                    url: '@Url.Action("AvansTalepSil", "Personel")',
+                    success: function () {
+                        Swal.fire({
+                            timer: 5000,
+                            title: '',
+                            text: 'Talep silindi, sayfaya yönlendiriliyorsunuz.',
+                            icon: 'success',
+                        })
+                        window.location = '/Personel/AvansTalepListele';
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+    }
+
+</script>

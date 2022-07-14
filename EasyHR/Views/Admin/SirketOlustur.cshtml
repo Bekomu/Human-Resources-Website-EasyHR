@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "Şirket Oluşturma Ekranı";
+}
+@model SirketOlusturViewModel
+
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+@if (ViewBag.Hata != null)
+{
+    <div class="alert alert-danger"> @ViewBag.Hata </div>
+}
+
+<form class="px-4" method="post" asp-controller="Admin" asp-action="SirketOlustur" enctype="multipart/form-data">
+    <div class="card card-primary card-outline m-3 m-auto" style="max-width:1100px;">
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-sm-3" align="center">
+
+                    <div class="mt-4">
+
+                        <div>
+                            <hr>
+
+                            <div class="" id="def">
+                                <img class="w-75" id="resim" src="~/sirket/logo/company.png" alt="resim" style="max-width:200px;">
+                            </div>
+
+                            <div class="hide" id="preview">
+                                <img class="w-75" src="#" alt="image preview" id="image" style="max-width:200px;" />
+                            </div>
+
+                            <input class="mt-3 w-100" type="file" id="imageInput" asp-for="Logo" />
+                            <hr>
+
+                            <span asp-validation-for="Logo" class="text-danger"></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-9 mt-4 bg-light border pb-5">
+
+                    <label asp-for="SirketAdi">Şirket Adı: </label>
+                    <div class="input-group">
+                        <input type="text" asp-for="SirketAdi" class="form-control" placeholder="Lütfen şirket adını giriniz...">
+                    </div>
+                    <span asp-validation-for="SirketAdi" class="text-danger"></span>
+                    <br />
+
+                    <label asp-for="MersisNo">Mersis No: </label>
+                    <div class="input-group">
+                        <input type="number" asp-for="MersisNo" class="form-control mersis" placeholder="Lütfen Mersis No giriniz...">
+                    </div>
+                    <span asp-validation-for="MersisNo" class="text-danger"></span>
+                    <br />
+
+                    <label asp-for="VergiDairesi">Vergi Dairesi: </label>
+                    <div class="input-group">
+                        <input type="text" asp-for="VergiDairesi" class="form-control" placeholder="Lütfen Vergi Dairesi giriniz...">
+                    </div>
+                    <span asp-validation-for="VergiDairesi" class="text-danger"></span>
+                    <br />
+
+                    <label asp-for="VergiNo">Vergi Numarası: </label>
+                    <div class="input-group">
+                        <input type="text" asp-for="VergiNo" class="form-control vergiNo" placeholder="Lütfen Vergi numarası giriniz...">
+                    </div>
+                    <span asp-validation-for="VergiNo" class="text-danger"></span>
+
+                    <br />
+                    <label class="mt-2" asp-for="SirketTuru">Şirket Türü:</label>
+                    <select class="form-control" asp-for="SirketTuru" asp-items="@Html.GetEnumSelectList<EasyHR.Models.Enums.SirketTuruEnum>()"></select>
+
+                    <br />
+                    <label class="mt-2" asp-for="Sektor">Şirket Sektörü:</label>
+                    <select class="form-control" asp-for="Sektor" asp-items="@Html.GetEnumSelectList<EasyHR.Models.Enums.SektorEnum>()"></select>
+
+                    <br />
+                    <label asp-for="SirketAdres">Şirket Adresi: </label>
+                    <div class="input-group">
+                        <input type="text" maxlength="100" asp-for="SirketAdres" class="form-control" placeholder="Lütfen Adres bilgisi giriniz...">
+                    </div>
+                    <span asp-validation-for="SirketAdres" class="text-danger"></span>
+
+                    <br />
+                    <label asp-for="SirketTelefonNo">Şirket Telefon No: </label>
+                    <div class="input-group">
+                        <input type="number" asp-for="SirketTelefonNo" class="form-control telefon" placeholder="Lütfen telefon bilgisi giriniz...">
+                    </div>
+                    <span asp-validation-for="SirketTelefonNo" class="text-danger"></span>
+
+                    <br />
+                    <label asp-for="SirketEmail">Şirket E-Posta: </label>
+                    <div class="input-group">
+                        <input type="text" maxlength="100" asp-for="SirketEmail" class="form-control" placeholder="Lütfen email bilgisi giriniz...">
+                    </div>
+                    <span asp-validation-for="SirketEmail" class="text-danger"></span>
+
+                    <br />
+                    <label asp-for="SirketWebSitesi">Şirket Web Sitesi: </label>
+                    <div class="input-group">
+                        <input type="text" asp-for="SirketWebSitesi" class="form-control" placeholder="Lütfen web sitesi bilgisi giriniz...">
+                    </div>
+                    <span asp-validation-for="SirketWebSitesi" class="text-danger"></span>
+
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="SirketInfo">Şirket Ek Bilgileri: </label>
+                        <textarea style="max-height:60px; min-height:60px;" maxlength="140" asp-for="SirketInfo" class="form-control" rows="3" placeholder="Şirket ek bilgilerini giriniz..."></textarea>
+                        <span asp-validation-for="SirketInfo" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="SirketKurulusTarihi">Şirket Kuruluş Tarihi</label>
+                        <input class="form-control" asp-for="SirketKurulusTarihi" value="" />
+                        <span asp-validation-for="SirketKurulusTarihi" class="text text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-info">Şirketi Kaydet</button>
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<!-- /.card -->
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,145 @@
+﻿@{
+    ViewData["Title"] = "Personel Kayıt Formu";
+}
+@model PersonelEkleViewModel
+
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+<form class="px-4" asp-controller="PersonelYonet" asp-action="PersonelKayit" method="post" enctype="multipart/form-data">
+    <div class="card card-primary card-outline m-3 m-auto" style="max-width:1100px;">
+        <div class="card-body">
+
+            <div class="row p-4 mb-5">
+
+                <div class="col-sm-3" align="center">
+                    <div class="mt-4">
+
+                        <div>
+                            <hr>
+                            <div class="" id="def">
+                                <img class="w-75" id="resim" src="~/sirket/logo/company.png" alt="resim" style="max-width:200px;">
+                            </div>
+
+                            <div class="hide" id="preview">
+                                <img class="w-75" src="#" alt="image preview" id="image" style="max-width:200px;" />
+                            </div>
+
+                            <input class="mt-3 w-100" type="file" id="imageInput" asp-for="Fotograf" />
+                            <hr>
+
+                            <span asp-validation-for="Fotograf" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-9 mt-4 bg-light border pb-5">
+                    <h4>Personel Bilgileri</h4>
+
+
+                    <div>
+                        <label class="mt-2" asp-for="Ad">Adı</label>
+                        <div class="input-group">
+                            <input type="text" asp-for="Ad" class="form-control sadeceHarf" placeholder="Adı"><br />
+                        </div>
+                        <span asp-validation-for="Ad" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="Soyad">Soyadı</label>
+                        <div class="input-group">
+                            <input type="text" asp-for="Soyad" class="form-control sadeceHarf" placeholder="Soyadı">
+                        </div>
+                        <span asp-validation-for="Soyad" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="MeslekId">Mesleği</label>
+                        <select class="form-control" asp-for="MeslekId" asp-items="Model.Meslekler"></select>
+                    </div>
+
+                    <label class="mt-2" asp-for="Unvan">Unvanı</label>
+                    <select class="form-control" asp-for="Unvan" asp-items="@Html.GetEnumSelectList<EasyHR.Models.Enums.UnvanEnum>()"></select>
+
+                    <label class="mt-2" asp-for="YoneticiId">Yöneticisi</label>
+                    <select class="form-control" asp-for="YoneticiId" asp-items="Model.Yoneticiler"></select>
+
+                    <div>
+                        <label class="mt-2" asp-for="TcNo">Türkiye Cumhuriyeti Kimlik Numarası</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="TcNo" class="form-control tcNo" placeholder="11 haneli kimlik no">
+                        </div>
+                        <span asp-validation-for="TcNo" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="DogumTarihi">Doğum Tarihi</label>
+                        <div class="input-group">
+                            <input type="date" asp-for="DogumTarihi" class="form-control" value="">
+                        </div>
+                        <span asp-validation-for="DogumTarihi" class="text-danger"></span>
+                        <span>@Html.ValidationMessage("ozelHata")</span>
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="OzelEmail">Özel E-Posta Adresi</label>
+                        <div class="input-group">
+                            <input type="email" asp-for="OzelEmail" class="form-control" placeholder="Özel E-Posta Adresi">
+                        </div>
+                        <span asp-validation-for="OzelEmail" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="Adres">Ev Adresi</label>
+                        <div class="input-group">
+                            <input type="text" asp-for="Adres" class="form-control" placeholder="Adres">
+                        </div>
+                        <span asp-validation-for="Adres" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="Telefon">Telefon Numarası</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="Telefon" class="form-control telefon">
+                        </div>
+                        <span asp-validation-for="Telefon" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="IseGirisTarihi">İşe Giriş Tarihi</label>
+                        <div class="input-group">
+                            <input type="date" asp-for="IseGirisTarihi" class="form-control" value="">
+                        </div>
+                        <span asp-validation-for="IseGirisTarihi" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="Maas">Maaşı</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="Maas" class="form-control maas" placeholder="00000">
+                        </div>
+                        <span asp-validation-for="Maas" class="text-danger"></span>
+                    </div>
+
+                    <label class="mt-2" asp-for="Cinsiyet">Cinsiyeti</label>
+                    <select class="form-control" asp-for="Cinsiyet" asp-items="@Html.GetEnumSelectList<EasyHR.Models.Enums.CinsiyetEnum>()"></select>
+
+                    <label class="mt-2" asp-for="MedeniHali">Medeni Hali</label>
+                    <select class="form-control" asp-for="MedeniHali" asp-items="@Html.GetEnumSelectList<EasyHR.Models.Enums.MedeniHalEnum>()"></select>
+
+                    <label class="mt-2" asp-for="KanGrubu">Kan Grubu</label>
+                    <select class="form-control" asp-for="KanGrubu" asp-items="@Html.GetEnumSelectList<EasyHR.Models.Enums.KanGrubuEnum>()"></select>
+
+                    <button class="btn btn-success mt-4 w-100"> Kaydet </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,141 @@
+﻿@*Comment*@
+
+@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "EASY HR";
+}
+
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EasyHR | Login</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="~/personel/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/js/site.js">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />
+
+    <!-- font awesome  -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+
+</head>
+<body class="d-flex align-items-center">
+    <div class="form-bg">
+        <div class="container">
+            <div class="row justify-content-center align-items-center my-5">
+                <div class="col-lg-offset-4 col-lg-8 col-md-offset-3 col-md-12">
+                    <div class="form-container">
+                        <div class="form-icon mt-5">
+                            <img src="~/personel/dist/img/logologin.png" />
+                            <br />
+                            <br />
+                            <p>Kariyer inşa ediyoruz.</p>
+                        </div>
+
+                        <form id="account" class="form-horizontal" align="center" method="post">
+
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="form-icon">
+                                <i class="nav-icon fas fa-user"></i>
+                            </div>
+
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                </div>
+                                <label asp-for="Input.Email"></label>
+                                <input class="form-control" asp-for="Input.Email" type="email" placeholder="E-posta Adresi">
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+
+                            </div>
+
+                            <div class="form-group input-group" id="show_hide_password">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text "><i class="fa fa-lock"></i></span>
+                                </div>
+                                <label asp-for="Input.Password"></label>
+                                <input id="password" asp-for="Input.Password" class="input form-control" type="password" placeholder="Parola">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" onclick="password_show_hide();">
+                                        <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                                        <i class="fas fa-eye" id="show_eye"></i>
+                                    </span>
+                                    <span class="text-danger" asp-validation-for="Input.Password"></span>
+                                </div>
+                            </div>
+
+                            <button class="btn signin">Giriş Yap</button>
+
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <div class=" remember-me ">
+                                        <input class="form-check-input" type="checkbox" asp-for="Input.RememberMe" />
+                                        <label class="form-check-label" asp-for="Input.RememberMe"> Beni Hatırla</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <span class="forgot-pass"><a href="#">Parolamı Unuttum</a></span>
+                                </div>
+
+                            </div>
+
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <section>
+                @*<h4>Use another service to log in.</h4>*@
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        @*<div>
+                                <p>
+                                    There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                    for details on setting up this ASP.NET application to support logging in via external services.
+                                </p>
+                            </div>*@
+
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
+                }
+            </section>
+        </div>
+    </div>
+</body>
+</html>
+<style>
+    body {
+        background-image: url("/personel/dist/img/loginbackground1.jpg");
+        background-size: cover;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

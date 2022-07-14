@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using EasyHR.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = UserManager.GetUserAsync(User);
+}
+<ul class="navbar-nav ml-auto">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+            <img width="30" class="border rounded-circle" src="~/personel/fotolar/@(user.Result.FotografAdi == null ? "default.jpg" : user.Result.FotografAdi)" alt="Alternate Text" />
+        </a>
+    </li>
+    <li class="nav-item">
+        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button  type="submit" class="nav-link btn btn-link text-dark">Çıkış Yap</button>
+        </form>
+    </li>
+}
+</ul>

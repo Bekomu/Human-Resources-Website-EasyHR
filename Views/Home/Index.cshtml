@@ -1,0 +1,44 @@
+﻿@model PersonelOzetViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1 class="m-3">Personel Bilgileri</h1>
+
+
+<div class="card card-primary card-outline m-3" style="max-width:600px;">
+
+    <div class="card-body">
+        
+
+        <p class="card-text">
+            <div class="row">
+
+                <div class="col-sm-3">
+                    <img class="brand-image img elevation-3 img-rounded w-100 h-auto" style="max-width:200px;" src="~/personel/dist/img/@(Model.FotografAdi == null ? "default.png" : Model.FotografAdi)" alt="User Image">
+                </div>
+
+                <div class="col-sm-9 mt-3">
+                    <div class="d-flex justify-content-start">
+                        <div class="font-weight-bold">Ad:</div>
+                        <div class="ml-1">@Model.Ad</div>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <div class="font-weight-bold">Soyad:</div>
+                        <div class="ml-1">@Model.Soyad</div>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <div class="font-weight-bold">Unvan:</div>
+                        <div class="ml-1">@Model.Unvan</div>
+                    </div>
+                    <div class="d-flex justify-content-start">
+                        <div class="font-weight-bold">Email:</div>
+                        <div class="ml-1">@Model.Email</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </p>
+    </div>
+</div>

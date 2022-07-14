@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewData["Title"] = "Avans Talep";
+}
+@model AvansTalepEkleViewModel
+@*Bu kısımda form olacak*@
+<h1 class="m-3">Avans Talep Formu</h1>
+
+
+
+
+<div class="card card-primary card-outline m-3" style="max-width:600px;">
+    <div class="card-body">
+
+        <div class="card-body">
+            <form method="post" asp-controller="Personel" asp-action="AvansTalep">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label asp-for="AvansTutari">Tutar: </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">₺</span>
+                            </div>
+                            <input type="number" min="0" asp-for="AvansTutari" class="form-control" placeholder="Lütfen talep ettiğiniz tutarı giriniz...">
+                            <span asp-validation-for="AvansTutari" class="text-danger"></span>
+                        </div>
+                        @if (ViewBag.Hata != null)
+                        {
+                            <span class="text-danger">@ViewBag.Hata</span>
+                        }
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label asp-for="Aciklama">Açıklama: </label>
+                            <textarea style="max-height:100px; min-height:100px;" asp-for="Aciklama" class="form-control" rows="3" placeholder="Avans istek gerekçenizi yazınız..."></textarea>
+                            <span asp-validation-for="Aciklama" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <button type="submit" class="btn btn-info">Talebi Onayla</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /.card -->

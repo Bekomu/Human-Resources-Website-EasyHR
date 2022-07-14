@@ -1,0 +1,139 @@
+﻿@model List<IzinTalepListeleViewModel>
+@{
+    ViewData["Title"] = "İzin Taleplerim";
+}
+
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+@if (TempData["mesaj"] != null)
+{
+    <div style="max-width:1100px;" class="alert alert-success mx-auto">
+        @TempData["mesaj"]
+    </div>
+}
+
+
+<div class="row m-3 m-auto" style="max-width:1100px;">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Talep Geçmişim</h3>
+            </div>
+
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr align="center">
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
+                            <th>Gün Sayısı</th>
+                            <th>İzin Türü</th>
+                            <th>Talep Tarihi</th>
+                            <th>Onay Durumu</th>
+                            <th>Onay/Ret Tarihi</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var izinTalep in Model)
+                        {
+                            <tr data-widget="expandable-table" aria-expanded="false" align="center">
+                                <td>@izinTalep.IzinBaslangicTarihi.ToString("dd-MM-yyyy")</td>
+                                <td>@izinTalep.IzinBitisTarihi.ToString("dd-MM-yyyy")</td>
+                                <td>@izinTalep.IzinGunSayisi</td>
+                                <td>@izinTalep.IzinTuru</td>
+                                <td>@izinTalep.TalepTarihi.ToString("dd-MM-yyyy")</td>
+                                <td>
+                                    <span id="aciklama">@izinTalep.IzinOnayDurumuStr</span>
+                                    <span>
+                                        @if ((int)izinTalep.IzinOnayDurumuEnum == 1)
+                                        {
+                                            <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                        }
+                                        else if ((int)izinTalep.IzinOnayDurumuEnum == 2)
+                                        {
+                                            <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                        }
+                                        else
+                                        {
+                                            <i style="color:red;" class="fas fa-times-circle"></i>
+                                        }
+                                    </span>
+                                </td>
+                                <td>@(izinTalep.SonuclanmaTarihi == null ? "-" : izinTalep.SonuclanmaTarihi.Value.ToString("dd-MM-yyyy"))</td>
+                                <td>
+                                    @if ((int)izinTalep.IzinOnayDurumuEnum == 2)
+                                    {
+                                        <a onclick="SilmeOnayi(@izinTalep.Id)" class="btn btn-sm btn-danger">İptal Et</a>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    @@media only screen and (max-width: 794px) {
+        #aciklama {
+            display: none;
+        }
+
+        #table {
+            overflow-x: auto;
+        }
+    }
+</style>
+
+<script>
+
+    function SilmeOnayi(izinId) {
+
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: `İzin talebiniz iptal edilecek, onaylıyor musunuz ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, iptal et!',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: "post",
+                    dataType: "html",
+                    data: { izinId: izinId },
+                    url: '@Url.Action("IzinTalepSil", "Personel")',
+                    success: function () {
+                        
+                        Swal.fire({
+                            timer: 5000,
+                            title: '',
+                            text: 'Talep silindi, sayfaya yönlendiriliyorsunuz.',
+                            icon: 'success',
+                        })
+                        window.location = '/Personel/IzinTalepListele';
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+    }
+
+</script>

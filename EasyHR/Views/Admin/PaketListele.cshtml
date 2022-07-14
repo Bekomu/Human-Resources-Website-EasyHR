@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Paketler";
+}
+
+@model List<PaketListeleViewModel>
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+<div class="row m-3 m-auto" style="max-width:1100px;">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Talep Geçmişim</h3>
+            </div>
+
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr align="center">
+                            <th>Fotoğraf</th>
+                            <th>Ad</th>
+                            <th>Tutar</th>
+                            <th>Para Birimi</th>
+                            <th>Kullanıcı Sayısı</th>
+                            <th>Yayımlanma Başlangıç Tarihi</th>
+                            <th>Yayımlanma Bitiş Tarihi</th>
+                            <th>Kullanım Süresi (gün)</th>
+                            <th>Sil</th>
+                            <th>Düzenle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var paket in Model)
+                        {
+                            <tr align="center">
+                                <td>
+                                    <img width="75" src="~/admin/paket/@(paket.FotografAdi)" alt="@paket.FotografAdi" />
+                                </td>
+                                <td>@paket.Ad</td>
+                                <td>@paket.Tutar</td>
+                                <td>@paket.ParaBirimiStr</td>
+                                <td>@paket.KullaniciSayisi</td>
+                                <td>@paket.YayimlanmaTarihi.ToString("dd-MM-yyyy")</td>
+                                <td>@paket.YayimdanAlmaTarihi.ToString("dd-MM-yyyy")</td>
+                                <td>@paket.KullanimSuresiGun</td>
+                                <td class="d-table-cell">
+                                    <a class="btn btn-sm btn-danger" id="sil" href="#">Sil</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-success" id="duzenle" href="#">Düzenle</a>
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    @@media only screen and (max-width: 794px) {
+        #aciklama {
+            display: none;
+        }
+
+        #table {
+            overflow-x: auto;
+        }
+    }
+</style>

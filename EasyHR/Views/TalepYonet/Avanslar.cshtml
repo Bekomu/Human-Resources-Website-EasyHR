@@ -1,0 +1,93 @@
+﻿@model List<AvansTalepleriniYonetViewModel>
+@{
+    ViewData["Title"] = "Avans Talepleri Yönetim Sayfası";
+}
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+<div class="row m-3 m-auto" style="max-width:1100px;">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Talep Geçmişim</h3>
+            </div>
+
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr align="center">
+                            <th>Personel</th>
+                            <th>Talep Edilen Tutar</th>
+                            <th>Talep Tarihi</th>
+                            <th>Durum</th>
+                            <th>Onay / Ret Tarihi</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var avansTalep in Model)
+                        {
+                            <tr data-widget="expandable-table" aria-expanded="false" align="center">
+                                <td id="tamAd@(avansTalep.Id)">@avansTalep.TamAd</td>
+                                <td id="avansTutari@(avansTalep.Id)">@avansTalep.AvansTutari.ToString("c2")</td>
+                                <td>@avansTalep.TalepTarihi.ToString("dd-MM-yyyy")</td>
+                                <td>
+                                    <span id="aciklama">@avansTalep.AvansOnayDurumuStr</span>
+                                    <span>
+                                        @if ((int)avansTalep.AvansOnayDurumu == 1)
+                                        {
+                                            <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                        }
+                                        else if ((int)avansTalep.AvansOnayDurumu == 2)
+                                        {
+                                            <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                        }
+                                        else
+                                        {
+                                            <i style="color:red;" class="fas fa-times-circle"></i>
+                                        }
+                                    </span>
+                                </td>
+                                <td>@(avansTalep.SonuclanmaTarihi == null ? "-" : avansTalep.SonuclanmaTarihi.Value.ToString("dd-MM-yyyy"))</td>
+                                <td class="d-table-cell">
+                                    @if ((int)avansTalep.AvansOnayDurumu == 2)
+                                    {
+                                        <a onclick="Onayla(@avansTalep.Id)" class="btn btn-sm btn-success">Onayla</a>
+                                        <a onclick="Reddet(@avansTalep.Id)" class="btn btn-sm btn-danger">Reddet</a>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="expandable-body">
+                                <td colspan="6">
+                                    <p class="mx-3">
+                                        Avans Talep Açıklaması :<br /><br />@avansTalep.Aciklama
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    @@media only screen and (max-width: 794px) {
+        #aciklama {
+            display: none;
+        }
+
+        #table {
+            overflow-x: auto;
+        }
+    }
+</style>

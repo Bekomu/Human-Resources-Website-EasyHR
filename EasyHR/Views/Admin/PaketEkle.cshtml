@@ -1,0 +1,256 @@
+﻿@model PaketEkleViewModel
+@{
+    ViewData["Title"] = "Paket Ekle";
+}
+
+
+<h1 align="center" class="m-3">Paket Ekleme Formu</h1>
+
+<div class="card card-primary card-outline m-3 m-auto" style="max-width:1100px;">
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <form id="frmHarcamaTalep" method="post" asp-controller="Admin" asp-action="PaketEkle" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label asp-for="PaketFotografi">Paket Fotoğrafı - Max Boyut (G * Y) = (260px * 175px)</label>
+
+                        <div class="hide" id="previewPaket">
+                            <img class="w-75" src="#" alt="image preview" id="image" style="max-width:200px;" />
+                        </div>
+
+                        <input class="mt-3 w-100" type="file" asp-for="PaketFotografi" />
+                        <hr>
+
+                        <span asp-validation-for="PaketFotografi" class="text-danger"></span>
+
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="Ad">Paket Adı</label>
+                        <div class="input-group">
+                            <input maxlength="17" id="inputPaketAdi" oninput="PaketAdiDegistir()" type="text" asp-for="Ad" class="form-control" placeholder="Paket adı giriniz..."><br />
+                        </div>
+                        <span asp-validation-for="Ad" class="text-danger"></span>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-sm-6">
+
+                            <label class="mt-2" asp-for="Tutar">Paket Ücreti</label>
+                            <div class="input-group form-group">
+                                <div class="ml-auto flex-grow-1">
+                                    <input id="inputUcret" oninput="PaketUcretiDegistir()" type="number" asp-for="Tutar" class="form-control avans" placeholder="00" />
+                                    <span asp-validation-for="Tutar" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="mt-2" asp-for="ParaBirimiEnum">Para Birimi</label>
+                            <select id="inputParaBirimi" onchange="ParaBirimDegistir()" class="form-control" asp-for="ParaBirimiEnum" asp-items="@Html.GetEnumSelectList<EasyHR.Models.Enums.ParaBirimiEnum>()"></select>
+                            <span asp-validation-for="ParaBirimiEnum" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <label class="mt-2" asp-for="KullaniciSayisi">Kullanıcı Sayısı</label>
+                        <div class="input-group">
+                            <input id="inputKullaniciSayisi" oninput="KullaniciSayisiDegistir()" type="number" asp-for="KullaniciSayisi" class="form-control maas" placeholder="00">
+                        </div>
+                        <span asp-validation-for="KullaniciSayisi" class="text-danger"></span>
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <label class="mt-2" asp-for="YayimlanmaBaslangic">Yayımlanma Başlangıç Tarihi</label>
+                        <input id="inputYayimlanmaBaslangic" type="date" class="form-control" asp-for="YayimlanmaBaslangic" />
+                        <span asp-validation-for="YayimlanmaBaslangic" class="text text-danger"></span>
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <label class="mt-2" asp-for="YayimlanmaBitis">Yayımlanma Bitiş Tarihi</label>
+                        <input id="inputYayimlanmaBitis" oninput="SonGunDegistir()" type="date" class="form-control" asp-for="YayimlanmaBitis" />
+                        <input id="simdikiZaman" type="hidden" name="name" value="@DateTime.Now.Date" />
+                        <span asp-validation-for="YayimlanmaBitis" class="text text-danger"></span>
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <label class="mt-2" asp-for="KullanilmaSuresi">Kullanılma Süresi (Gün)</label>
+                        <input id="inputKullanilmaSuresi" oninput="KullanimSuresiDegistir()" class="form-control" asp-for="KullanilmaSuresi" placeholder="000" />
+                        <span asp-validation-for="KullanilmaSuresi" class="text text-danger"></span>
+                    </div>
+
+                    <button class="btn btn-success mt-4 w-100"> Kaydet </button>
+
+                </form>
+            </div>
+
+            <div class="col-sm-6">
+                <h2 align="center">Paket Önizlemesi</h2>
+                <div class="mt-5">
+                    <div class="w-50 m-auto">
+                        <div class="pricingTable10 border" style="max-width:260px;">
+
+                            <div id="previewBox" class="pricingTable-header">
+                                <h3 id="paketAdi" class="heading">Paket adı</h3>
+                                <span class="price-value">
+                                    <span id="paraBirimi" class="currency">₺</span> <span id="paketUcreti">00</span>
+                                    <span class="month">/ ay</span>
+                                </span>
+                            </div>
+
+                            <div class="pricing-content">
+                                <ul>
+                                    <li><span id="kullaniciSayisi">00</span> adet Personel</li>
+                                    <li><span id="emailSayisi">00</span> adet E-Posta Hesabı</li>
+                                    <li><span id="kullanimSuresi">000</span> Gün Kullanım</li>
+                                    <li>Satın almak için son <span id="kalanGun">00</span> gün</li>
+                                </ul>
+                                <a href="#" class="read">Satın al</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @*// site.JS içine almayın...*@
+
+    @*        // FOTO YÜKLEME ÖNİZLEME - PAKET SAYFASI*@
+    <script>
+
+        var previewPaket = document.getElementById("previewPaket");
+        var previewBox = document.getElementById("previewBox");
+        var inputPaket = document.getElementById("PaketFotografi");
+        //var def = document.getElementById("def");
+        //var imageName = document.getElementById("imageName");
+        //var imageSize = document.getElementById("imageSize");
+        //var imageType = document.getElementById("imageType");
+        //var image = document.getElementById("image");
+
+        function readFile(file) {
+            var reader = new FileReader();
+            // when the file is loaded
+            reader.onload = function (e) {
+                image.src = e.target.result; // base64 string
+            }
+            // read file as base64 string
+            reader.readAsDataURL(file);
+        }
+
+        inputPaket.onchange = function (e) {
+            if (inputPaket.files && inputPaket.files[0]) {
+                var f = inputPaket.files[0];
+                readFile(f);
+                var path = URL.createObjectURL(e.target.files[0]);
+                previewBox.style.backgroundImage = 'url("' + path + '")';
+                previewBox.style.backgroundSize = "cover";
+            }
+            else {
+                previewBox.style.backgroundImage = 'url("")';
+            }
+        };
+        // FOTO YÜKLEME ÖNİZLEME - PAKET SAYFASI
+
+        function PaketAdiDegistir() {
+            var inputPaketAdi = document.getElementById("inputPaketAdi");
+            var paketAdi = document.getElementById("paketAdi");
+
+            if (inputPaketAdi.value != null && inputPaketAdi.value != "") {
+                paketAdi.innerHTML = inputPaketAdi.value;
+            } else {
+                paketAdi.innerHTML = "Paket adı";
+            }
+
+        };
+
+        function PaketUcretiDegistir() {
+            var inputUcret = document.getElementById("inputUcret");
+            var paketUcreti = document.getElementById("paketUcreti");
+
+            if (inputUcret.value != null && inputUcret.value != "") {
+                paketUcreti.innerHTML = inputUcret.value;
+            } else {
+                paketUcreti.innerHTML = "00";
+            }
+
+        };
+
+        function KullaniciSayisiDegistir() {
+            var inputKullaniciSayisi = document.getElementById("inputKullaniciSayisi");
+            var kullaniciSayisi = document.getElementById("kullaniciSayisi");
+            var emailSayisi = document.getElementById("emailSayisi");
+
+            if (inputKullaniciSayisi.value != null && inputKullaniciSayisi.value != "") {
+                kullaniciSayisi.innerHTML = inputKullaniciSayisi.value;
+                emailSayisi.innerHTML = inputKullaniciSayisi.value;
+            } else {
+                kullaniciSayisi.innerHTML = "0000";
+                emailSayisi.innerHTML = "0000";
+            }
+        };
+
+        function SonGunDegistir() {
+            //var inputYayimlanmaBitis = document.getElementById("inputYayimlanmaBitis");
+            //var kalanGun = document.getElementById("kalanGun");
+            //var simdikiZaman = document.getElementById("simdikiZaman").value;
+            //var bitisZamani = inputYayimlanmaBitis.value;
+
+            //alert(simdikiZaman);
+            //alert(bitisZamani);
+
+            //if (inputYayimlanmaBitis.value != null && inputYayimlanmaBitis.value != "") {
+
+            //    var fark = Math.abs(bitisZamani - simdikiZaman);
+
+            //    kalanGun.innerHTML = Math.ceil(fark / (1000 * 60 * 60 * 24));
+
+            //} else {
+            //    kalanGun.innerHTML == "00";
+            //}
+
+        };
+
+        function KullanimSuresiDegistir() {
+            var inputKullanimSuresi = document.getElementById("inputKullanilmaSuresi");
+            var kullanimSuresi = document.getElementById("kullanimSuresi");
+
+            if (inputKullanimSuresi.value != null && inputKullanimSuresi.value != "") {
+                kullanimSuresi.innerHTML = inputKullanimSuresi.value;
+            } else {
+                kullanimSuresi.innerHTML = "000";
+            }
+
+        };
+
+        function ParaBirimDegistir() {
+            var inputParaBirimi = document.getElementById("inputParaBirimi");
+            var paraBirimi = document.getElementById("paraBirimi");
+
+            if (inputParaBirimi.value != null && inputParaBirimi.value != "") {
+
+                if (inputParaBirimi.value == 0) { paraBirimi.innerHTML = "₺"; }
+                if (inputParaBirimi.value == 1) { paraBirimi.innerHTML = "$"; }
+                if (inputParaBirimi.value == 2) { paraBirimi.innerHTML = "€"; }
+                if (inputParaBirimi.value == 3) { paraBirimi.innerHTML = "£"; }
+
+            } else {
+                paraBirimi.innerHTML = "₺";
+            }
+        };
+
+
+    </script>
+
+}

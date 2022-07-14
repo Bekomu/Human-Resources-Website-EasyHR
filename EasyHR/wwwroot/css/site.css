@@ -1,0 +1,407 @@
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.hide {
+    display: none;
+}
+
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  /*margin-bottom: 60px;*/
+}
+footer {
+  /*position: absolute;
+  bottom: 0;
+  width: auto;
+  white-space: nowrap;
+  line-height: 30px;  */
+  
+}
+
+/* Login Sayfası Css */
+
+.form-container {
+    background: linear-gradient(#1861ac,#1861ac);
+    font-family: 'Roboto', sans-serif;
+    font-size: 0;
+    padding: 0 15px;
+    border: 1px solid #1861ac;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+.form-container .form-icon{
+    color: #fff;
+    font-size: 13px;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(0,0,0,0.2);
+    width: 50%;
+    padding: 20px 0;
+    vertical-align: top;
+    display: inline-block;
+}
+.form-container .form-icon i{
+    font-size: 124px;
+    margin: 0 0 10px;
+    display: block;
+}
+.form-container .form-icon .signup a{
+    color: #fff;
+    text-transform: capitalize;
+    transition: all 0.3s ease;
+}
+.form-container .form-icon .signup a:hover{ text-decoration: underline; }
+.form-container .form-horizontal{
+    background: rgba(255,255,255,0.99);
+    width: 50%;
+    padding: 60px 30px;
+    margin: -20px 0;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    display: inline-block;
+}
+.form-container .title{
+    color: #454545;
+    font-size: 23px;
+    font-weight: 900;
+    text-align: center;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+    margin: 0 0 30px 0;
+}
+.form-horizontal .form-group {
+    background-color: rgba(255,255,255,0.15);
+    margin: 0 0 15px;
+    border: 1px solid #b5b5b5;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.form-horizontal .input-icon{
+    color: #b5b5b5;
+    font-size: 15px;
+    text-align: center;
+    line-height: 38px;
+    height: 35px;
+    width: 40px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+
+.form-horizontal .input-group-text {
+    border-radius: 15px;
+    
+}
+
+    .form-horizontal .form-control {
+       /* color: #b5b5b5;*/
+        background-color: transparent;
+        font-size: 14px;
+        letter-spacing: 1px;
+        width: calc(100% - 55px);
+        height: 33px;
+        padding: 2px 10px 0 0;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        display: inline-block;
+        transition: all 0.3s;
+        margin-left: 7px;
+    }
+.form-horizontal .form-control:focus{
+    box-shadow: none;
+    border: none;
+}
+.form-horizontal .form-control::placeholder{
+    color: #b5b5b5;
+    font-size: 13px;
+    text-transform: capitalize;
+
+}
+.form-horizontal .btn {
+    color: rgba(255,255,255,0.8);
+    background: #1861ac;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    width: 100%;
+    margin: 0 0 10px 0;
+    border: none;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+.form-horizontal .btn:hover,
+.form-horizontal .btn:focus{
+    color: #fff;
+    background-color: #008153;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+.form-horizontal .forgot-pass{
+    font-size: 12px;
+    display: block;
+}
+.form-horizontal .remember-me {
+    font-size: 12px;
+    display: block;
+    
+}
+
+
+.form-horizontal .forgot-pass a{
+    color: #999;
+    transition: all 0.3s ease;
+}
+.form-horizontal .forgot-pass a:hover{
+    color: #777;
+    text-decoration: underline;
+}
+.omb_row-sm-offset-3 div:first-child[class*="col-"] {
+    margin-left: 25%;
+}
+
+@media only screen and (max-width:576px){
+    .form-container{ 
+        padding-bottom: 15px; 
+    }
+    .form-container .form-icon{
+        width: 75%;
+        height: 25%;
+        padding: 15px 0;
+    }
+    .form-container .form-horizontal{
+        width: 75%;
+        margin: 0;
+    }
+ 
+  
+}
+
+/*Index sayfası carousel CSS*/
+
+.demo10 {
+    background: #C0BFBF;
+    padding: 30px 0
+}
+
+.pricingTable10 {
+    text-align: center
+    
+}
+
+    .pricingTable10 .pricingTable-header {
+        padding: 30px 0;
+        background: #4d4d4d;
+        /*background: url("../admin/paket/paket4-260x175.jpg");*/
+        position: relative;
+        transition: all .3s ease 0s
+    }
+
+    .pricingTable10:hover .pricingTable-header {
+        background: #09b2c6
+    }
+
+    .pricingTable10 .pricingTable-header:after, .pricingTable10 .pricingTable-header:before {
+        content: "";
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 1px solid #d9d9d8;
+        position: absolute;
+        bottom: 12px
+    }
+
+    .pricingTable10 .pricingTable-header:before {
+        left: 40px
+    }
+
+    .pricingTable10 .pricingTable-header:after {
+        right: 40px
+    }
+
+    .pricingTable10 .heading {
+        font-size: 20px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 0
+    }
+
+    .pricingTable10 .price-value {
+        display: inline-block;
+        position: relative;
+        font-size: 55px;
+        font-weight: 700;
+        color: #09b1c5;
+        transition: all .3s ease 0s
+    }
+
+    .pricingTable10:hover .price-value {
+        color: #fff
+    }
+
+    .pricingTable10 .currency {
+        font-size: 30px;
+        font-weight: 700;
+        position: absolute;
+        top: 6px;
+        left: -19px
+    }
+
+    .pricingTable10 .month {
+        font-size: 16px;
+        color: #fff;
+        position: absolute;
+        bottom: 15px;
+        right: -30px;
+        text-transform: uppercase
+    }
+
+    .pricingTable10 .pricing-content {
+        padding-top: 50px;
+        background: #fff;
+        position: relative
+    }
+
+        .pricingTable10 .pricing-content:after, .pricingTable10 .pricing-content:before {
+            content: "";
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid #7c7c7c;
+            position: absolute;
+            top: 12px
+        }
+
+        .pricingTable10 .pricing-content:before {
+            left: 40px
+        }
+
+        .pricingTable10 .pricing-content:after {
+            right: 40px
+        }
+
+        .pricingTable10 .pricing-content ul {
+            padding: 0 20px;
+            margin: 0;
+            list-style: none
+        }
+
+            .pricingTable10 .pricing-content ul:after, .pricingTable10 .pricing-content ul:before {
+                content: "";
+                width: 8px;
+                height: 46px;
+                border-radius: 3px;
+                background: linear-gradient(to bottom,#818282 50%,#727373 50%);
+                position: absolute;
+                top: -22px;
+                z-index: 1;
+                box-shadow: 0 0 5px #707070;
+                transition: all .3s ease 0s
+            }
+
+    .pricingTable10:hover .pricing-content ul:after, .pricingTable10:hover .pricing-content ul:before {
+        background: linear-gradient(to bottom,#40c4db 50%,#34bacc 50%)
+    }
+
+    .pricingTable10 .pricing-content ul:before {
+        left: 44px
+    }
+
+    .pricingTable10 .pricing-content ul:after {
+        right: 44px
+    }
+
+    .pricingTable10 .pricing-content ul li {
+        font-size: 15px;
+        font-weight: 700;
+        color: #777473;
+        padding: 10px 0;
+        border-bottom: 1px solid #d9d9d8
+    }
+
+        .pricingTable10 .pricing-content ul li:last-child {
+            border-bottom: none
+        }
+
+    .pricingTable10 .read {
+        display: inline-block;
+        font-size: 16px;
+        color: #fff;
+        text-transform: uppercase;
+        background: #d9d9d8;
+        padding: 8px 25px;
+        margin: 30px 0;
+        transition: all .3s ease 0s
+    }
+
+        .pricingTable10 .read:hover {
+            text-decoration: none
+        }
+
+    .pricingTable10:hover .read {
+        background: #09b1c5
+    }
+
+@media screen and (max-width:990px) {
+    .pricingTable10 {
+        margin-bottom: 25px
+    }
+}
+
+
+
+
+

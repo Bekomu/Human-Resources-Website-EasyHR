@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Mevcut Üyelik Paketi";
+}
+
+@model PaketListeleViewModel
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+
+<div class="m-auto">
+    @if (Model != null)
+    {
+        @if (ViewBag.mesaj != null)
+        {
+            <div style="max-width:1100px; margin:auto;" class="alert alert-success">@ViewBag.mesaj</div>
+        }
+        
+            <div class="pricingTable10 m-auto border" style="max-width:260px;">
+
+                <div id="previewBox" class="pricingTable-header">
+                    <style>
+              #previewBox {
+                  padding: 30px 0;
+                  /*background: #4d4d4d;*/
+                  background: url("../admin/paket/@Model.FotografAdi");
+                  position: relative;
+                  transition: all .3s ease 0s
+                  }
+                    </style>
+                    <h3 id="paketAdi" class="heading">@Model.Ad</h3>
+
+                    <span class="price-value">
+                        <span id="paraBirimi">@Model.ParaBirimiStr</span><span id="paketUcreti">@Model.Tutar.ToString("n0")</span><span class="month">/ ay</span>
+                    </span>
+
+                </div>
+
+                <div class="pricing-content">
+                    <ul>
+                        <li><span id="kullaniciSayisi">@Model.KullaniciSayisi</span> adet Personel</li>
+                        <li><span id="emailSayisi">@Model.KullaniciSayisi</span> adet E-Posta Hesabı</li>
+                        <li><span id="kullanimSuresi">@Model.KullanimSuresiGun</span> Gün Kullanım</li>
+                        <li>
+                            Satın almak için son <span id="kalanGun">
+                                @( Math.Ceiling((Model.YayimdanAlmaTarihi - DateTime.Now).TotalDays))
+                            </span> gün <p>(Satın Aldınız)</p>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+    }
+    else
+    {
+        @if (ViewBag.mesaj != null)
+        {
+            <div style="max-width: 1100px; margin: auto;" class="alert alert-danger">@ViewBag.mesaj</div>
+        }
+    }
+</div>

@@ -1,0 +1,84 @@
+﻿@model List<IzinTalepleriniYonetViewModel>
+@{
+    ViewData["Title"] = "İzin Talepleri Yönetim Sayfası";
+}
+
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+<div class="row m-3 m-auto" style="max-width:1200px;">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr align="center">
+                            <th>Personel</th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
+                            <th>Gün Sayısı</th>
+                            <th>İzin Türü</th>
+                            <th>Talep Tarihi</th>
+                            <th>Onay Durumu</th>
+                            <th>Onay/Ret Tarihi</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var izinTalep in Model)
+                        {
+                            <tr align="center">
+                                <td id="tamAd@(izinTalep.Id)">@izinTalep.TamAd</td>
+                                <td id="baslangic@(izinTalep.Id)">@izinTalep.IzinBaslangicTarihi.ToString("dd-MM-yyyy")</td>
+                                <td id="bitis@(izinTalep.Id)">@izinTalep.IzinBitisTarihi.ToString("dd-MM-yyyy")</td>
+                                <td id="gun@(izinTalep.Id)">@izinTalep.IzinGunSayisi</td>
+                                <td>@izinTalep.IzinTuru</td>
+                                <td>@izinTalep.TalepTarihi.ToString("dd-MM-yyyy")</td>
+                                <td class="d-table-cell">
+                                    <span id="aciklama">@izinTalep.IzinOnayDurumuStr</span>
+                                    <span>
+                                        @if ((int)izinTalep.IzinOnayDurumuEnum == 1)
+                                        {
+                                            <i style="color:lightgreen;" class="fas fa-check-circle"></i>
+                                        }
+                                        else if ((int)izinTalep.IzinOnayDurumuEnum == 2)
+                                        {
+                                            <i style="color: darkorange;" class="fas fa-minus-circle"></i>
+                                        }
+                                        else
+                                        {
+                                            <i style="color:red;" class="fas fa-times-circle"></i>
+                                        }
+                                    </span>
+                                </td>
+                                <td>@(izinTalep.SonuclanmaTarihi == null ? "-" : izinTalep.SonuclanmaTarihi.Value.ToString("dd-MM-yyyy"))</td>
+                                <td class="d-table-cell">
+                                    @if ((int)izinTalep.IzinOnayDurumuEnum == 2)
+                                    {
+                                        <a onclick="IzinOnayla(@izinTalep.Id)" class="btn btn-sm btn-success">Onayla</a>
+                                        <a onclick="IzinReddet(@izinTalep.Id)" class="btn btn-sm btn-danger">Reddet</a>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @@media only screen and (max-width: 794px) {
+        #aciklama {
+            display: none;
+        }
+
+        #table {
+            overflow-x: auto;
+        }
+    }
+</style>

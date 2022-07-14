@@ -1,0 +1,156 @@
+﻿@model PersonelListeleViewModel
+@using Microsoft.AspNetCore.Identity
+@using EasyHR.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Personel Listesi";
+}
+
+@{
+    var user = @UserManager.GetUserAsync(User).Result;
+}
+
+<h1 align="center" class="m-3">@ViewData["Title"]</h1>
+
+@if (ViewBag.mesaj != null)
+{
+    <div style="max-width:1100px;" class="alert alert-success">@ViewBag.mesaj</div>
+}
+
+
+<div class="row m-3 m-auto" style="max-width:1100px;">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Liste</h3>
+            </div>
+
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr align="center">
+                            <th>Personel Ad Soyad</th>
+                            <th>Meslek</th>
+                            <th>Şirket</th>
+                            <th>Maaş</th>
+                            <th>Personel Mail Adresi</th>
+                            <th>Personel Telefon</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @* Sadece yöneticinin şirketindeki personeller listelenecek... *@
+                        @foreach (var personel in Model.Personeller)
+                        {
+                            <tr data-widget="expandable-table" aria-expanded="false" align="center">
+                                <td>@personel.Ad @personel.Soyad</td>
+                                <td>@personel.Meslek.MeslekAdi + (@personel.Meslek.MeslekKodu)</td>
+                                <td>@personel.Sirket.SirketAdi</td>
+                                <td>@personel.Maas.ToString("c2")</td>
+                                <td>@personel.UserName</td>
+                                <td>@personel.Telefon</td>
+                                @if (user.Id == personel.YoneticiId)
+                                {
+                                    <td><a onclick="SilmeOnayi(@personel.Id)" class="btn btn-sm btn-danger">Personeli Sil</a></td>
+                                }
+                                else
+                                {
+                                    <td>-</td>
+                                }
+                            </tr>
+                            <tr class="expandable-body">
+                                <td colspan="7">
+                                    <div class="row">
+
+                                        <div class="col-sm-2">
+                                            <img style="max-width:120px;" src="~/personel/fotolar/@personel.FotografAdi" alt="@personel.Ad + @personel.Soyad" />
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <p class="mx-3">
+                                                @if (personel.Yonetici != null)
+                                                {
+                                                    <div><strong>Yönetici:</strong> @personel.Yonetici.Ad     @personel.Yonetici.Soyad<br /></div>
+                                                }
+                                                else
+                                                {
+                                                    <div> <strong>Yönetici:</strong>&nbsp;Yönetici Yok.<br /></div>
+                                                }
+                                                <strong>Unvan :</strong> @personel.Unvan<br />
+                                                <strong>Yıllık İzin Gün Sayısı :</strong>  @personel.YillikIzinGunSayisi<br />
+                                                <strong>Minimum Avans Hakkı :</strong> @personel.MinAvansHakki.ToString("c2")<br />
+                                                <strong>Maksimum Avans Hakkı :</strong>  @personel.MaksAvansHakki.ToString("c2")<br />
+                                                <strong>İşe Giriş Tarihi :</strong>  @personel.IseGirisTarihi.ToShortDateString()<br />
+                                                @if (personel.IstenCikisTarihi != null)
+                                                {<div><strong>İşten Çıkış Tarihi:</strong> @personel.IseGirisTarihi.ToShortDateString()<br /></div>}
+                                                <strong>TC No :</strong> @personel.TcNo<br />
+                                                <strong>Adres Bilgileri :</strong>  @personel.Adres<br />
+                                                <strong>Medeni Hali :</strong> @personel.MedeniHali<br />
+                                                <strong>Kan Grubu :</strong> @personel.KanGrubu<br />
+                                                <strong>Adres Bilgileri :</strong> @personel.Adres<br />
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<style>
+    @@media only screen and (max-width: 794px) {
+
+        #table {
+            overflow-x: auto;
+        }
+    }
+</style>
+
+<script>
+
+    @*function SilmeOnayi(*****) {
+
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: ` ****** iptal edilecek, onaylıyor musunuz ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, *****!',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: "post",
+                    dataType: "html",
+                    data: { *****: ****** },
+                    url: '@Url.Action("******", "******")',
+                    success: function () {
+                        Swal.fire({
+                            timer: 5000,
+                            title: '',
+                            text: '*******, sayfaya yönlendiriliyorsunuz.',
+                            icon: 'success',
+                        })
+                        window.location = '/controller/action';
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+    }*@
+
+</script>
