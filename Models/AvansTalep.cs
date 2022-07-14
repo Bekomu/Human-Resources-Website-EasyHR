@@ -28,14 +28,14 @@ namespace EasyHR.Models
         [Required, MaxLength(140)]
         public string Aciklama { get; set; }
         
-        // Sonuçlanma tarihi nullable olmalıdır.
+        
         public DateTime? SonuclanmaTarihi { get; set; }
        
-        // Personel için navigasyon özelliği
+        
         [Required]
         public Personel Personel { get; set; }
        
-        // Personel için yabancı anahtar
+        
         public int PersonelId { get; set; }
     }
 }
