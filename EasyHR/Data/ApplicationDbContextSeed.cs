@@ -43,7 +43,7 @@ namespace EasyHR.Data
                     Unvan = UnvanEnum.Yonetici,
                     KanGrubu = KanGrubuEnum.SifirPozitif,
                     MedeniHali = MedeniHalEnum.Evli,
-                    MeslekId = 1,
+                    MeslekId = 2,
                     SirketId = 1,
                 };
 
@@ -65,7 +65,7 @@ namespace EasyHR.Data
                     Unvan = UnvanEnum.Yonetici,
                     KanGrubu = KanGrubuEnum.SifirPozitif,
                     MedeniHali = MedeniHalEnum.Bekar,
-                    MeslekId = 1,
+                    MeslekId = 2,
                     SirketId = 1,
                 };
 
@@ -87,7 +87,7 @@ namespace EasyHR.Data
                     Unvan = UnvanEnum.Calisan,
                     KanGrubu = KanGrubuEnum.APozitif,
                     MedeniHali = MedeniHalEnum.Bekar,
-                    MeslekId = 1,
+                    MeslekId = 2,
                     SirketId = 1,
                 };
 

@@ -26,6 +26,11 @@ namespace EasyHR.Data
         public DbSet<Cuzdan> Cuzdanlar { get; set; }
         public DbSet<Bakiye> Bakiyeler { get; set; }
         public DbSet<Kart> Kartlar { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }
 
