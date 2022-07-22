@@ -187,7 +187,7 @@ namespace EasyHR.Controllers
 
             using (var smtp = new SmtpClient("berkayoz.com", 587))
             {
-                smtp.Credentials = new NetworkCredential("no-reply@berkayoz.com", "ddA1g672_");
+                smtp.Credentials = new NetworkCredential("no-reply@berkayoz.com", "pass");
                 MailMessage mail = new MailMessage("no-reply@berkayoz.com", ozelEmail, mailBasligi, mailIcerigi);
                 mail.IsBodyHtml = true;
                 smtp.EnableSsl = true;
